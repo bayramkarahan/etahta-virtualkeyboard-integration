@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+SERVICE="etahta-chrome-osk.service"
+
+echo "etahta-chrome-osk: removing systemd user service"
+
+# Servisi stop ve disable etme (kullanıcı ortamında)
+for uid in $(loginctl list-users --no-legend 2>/dev/null | awk '{print $1}'); do
+    USER=$(getent passwd "$uid" | cut -d: -f1)
+    [ -z "$USER" ] && continue
+
+    runuser -u "$USER" -- systemctl --user stop "$SERVICE" >/dev/null 2>&1 || true
+    runuser -u "$USER" -- systemctl --user disable "$SERVICE" >/dev/null 2>&1 || true
+done
+
+exit 0
+

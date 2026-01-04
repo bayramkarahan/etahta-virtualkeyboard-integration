@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+SERVICE="etahta-chrome-osk.service"
+
+echo "etahta-chrome-osk: applying systemd user presets"
+
+# system-wide preset (user services)
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl --no-reload preset-all >/dev/null 2>&1 || true
+fi
+
+# Root ortamından kullanıcı servislerini başlatmaya çalışma (çalışmaz)
+# Kullanıcı girişinde systemd --user zaten servisi çalıştıracak
+
+exit 0
+

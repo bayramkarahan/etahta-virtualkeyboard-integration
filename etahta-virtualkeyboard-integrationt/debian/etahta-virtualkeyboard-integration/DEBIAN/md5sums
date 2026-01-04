@@ -1,0 +1,6 @@
+ddfe0c11250d04eb4822645ed564e134  usr/lib/etahta/chrome-osk-wrapper.sh
+a66c87f3c480f2caf73bd2aa34a79725  usr/lib/etahta/chrome-osk.py
+dab0e8c0e0a4e7ab8d55ae15cb6fe521  usr/lib/systemd/user-preset/90-etahta.preset
+5c5a00ed3eb6926b67e16068d288590c  usr/lib/systemd/user/etahta-chrome-osk.service
+4a4dd3598707603b3f76a2378a4504aa  usr/share/doc/etahta-virtualkeyboard-integration/changelog.gz
+d232eeba300d518b3d2600f88ace068f  usr/share/doc/etahta-virtualkeyboard-integration/copyright
