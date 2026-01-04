@@ -1,0 +1,35 @@
+#!/bin/sh
+set -e
+
+SERVICE="eta-chrome-osk.service"
+
+echo "eta-chrome-osk: running postrm"
+
+# systemd user servislerini durdur, disable et ve symlinkleri temizle
+if command -v systemctl >/dev/null 2>&1; then
+    for uid in $(loginctl list-users --no-legend 2>/dev/null | awk '{print $1}'); do
+        USER=$(getent passwd "$uid" | cut -d: -f1)
+        [ -z "$USER" ] && continue
+
+        echo "eta-chrome-osk: cleaning up for user $USER"
+
+        # servis durdur
+        runuser -u "$USER" -- systemctl --user stop "$SERVICE" >/dev/null 2>&1 || true
+
+        # servis disable
+        runuser -u "$USER" -- systemctl --user disable "$SERVICE" >/dev/null 2>&1 || true
+
+        # kullanıcı symlinklerini temizle
+        runuser -u "$USER" -- rm -f ~/.config/systemd/user/graphical-session.target.wants/"$SERVICE" >/dev/null 2>&1 || true
+
+        # kullanıcı daemon reload
+        runuser -u "$USER" -- systemctl --user daemon-reload >/dev/null 2>&1 || true
+
+        # çalışan python proseslerini öldür
+        runuser -u "$USER" -- pkill -f chrome-osk.py >/dev/null 2>&1 || true
+    done
+fi
+
+echo "eta-chrome-osk: postrm done"
+exit 0
+

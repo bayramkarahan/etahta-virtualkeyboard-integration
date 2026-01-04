@@ -1,11 +1,30 @@
+PREFIX ?= /usr
+
 build:
-	: run make install
+	@echo "Nothing to build"
+
 install:
-	mkdir -p $(DESTDIR)/usr/bin
-	cp -prfv eta-chrome-osk $(DESTDIR)/usr/bin/
-	mkdir -p $(DESTDIR)/usr/lib/etahta
-	cp -prfv chrome-osk.py $(DESTDIR)/usr/lib/etahta/
-	mkdir -p $(DESTDIR)/usr/lib/systemd/user
-	cp -prfv eta-chrome-osk.service $(DESTDIR)/usr/lib/systemd/user/
-	mkdir -p $(DESTDIR)/usr/lib/systemd/user-preset
-	cp -prfv 90-eta.preset $(DESTDIR)/usr/lib/systemd/user-preset/
+	# binaries
+	# python backend ve wrapper
+	install -d $(DESTDIR)$(PREFIX)/lib/etahta
+	install -m 755 chrome-osk.py \
+		$(DESTDIR)$(PREFIX)/lib/etahta/chrome-osk.py
+		
+	install -m 755 chrome-osk-wrapper.sh \
+		$(DESTDIR)$(PREFIX)/lib/etahta/chrome-osk-wrapper.sh
+    
+	# python backend
+	install -d $(DESTDIR)$(PREFIX)/lib/etahta
+	install -m 755 chrome-osk.py \
+		$(DESTDIR)$(PREFIX)/lib/etahta/chrome-osk.py
+
+	# systemd user service
+	install -d $(DESTDIR)$(PREFIX)/lib/systemd/user
+	install -m 644 eta-chrome-osk.service \
+		$(DESTDIR)$(PREFIX)/lib/systemd/user/eta-chrome-osk.service
+
+	# systemd user preset
+	install -d $(DESTDIR)$(PREFIX)/lib/systemd/user-preset
+	install -m 644 90-eta.preset \
+		$(DESTDIR)$(PREFIX)/lib/systemd/user-preset/90-eta.preset
+

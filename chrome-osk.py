@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 import gi
 import subprocess
+import os
 
 gi.require_version("Wnck", "3.0")
 gi.require_version("Gtk", "3.0")
 from gi.repository import Wnck, Gtk
 
-# Try ETA virtual keyboard via D-Bus
+# ---- ETA keyboard (D-Bus) detection ----
 USE_ETA = False
+iface = None
+
 try:
     import dbus
     bus = dbus.SessionBus()
@@ -17,7 +20,27 @@ try:
 except Exception:
     USE_ETA = False
 
-class ChromeKeyboardManager:
+# ---- Helpers ----
+def show_keyboard():
+    if USE_ETA:
+        try:
+            iface.show(False)
+        except Exception:
+            pass
+    else:
+        subprocess.Popen(["onboard"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+def hide_keyboard():
+    if USE_ETA:
+        try:
+            iface.hide()
+        except Exception:
+            pass
+    else:
+        subprocess.Popen(["pkill", "-f", "onboard"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+# ---- Main manager ----
+class BrowserKeyboardManager:
     def __init__(self):
         self.screen = Wnck.Screen.get_default()
         self.screen.force_update()
@@ -26,36 +49,26 @@ class ChromeKeyboardManager:
     def on_active_window_changed(self, screen, prev):
         win = screen.get_active_window()
         if not win:
-            self.hide()
+            hide_keyboard()
             return
 
-        name = win.get_name()
-        if "Google Chrome" in name:
-            self.show()
-        else:
-            self.hide()
+        app = win.get_application()
+        if not app:
+            hide_keyboard()
+            return
 
-    def show(self):
-        if USE_ETA:
-            try:
-                iface.show(False)
-            except Exception:
-                pass
-        else:
-            subprocess.Popen(["onboard"])
+        app_name = app.get_name().lower()
 
-    def hide(self):
-        if USE_ETA:
-            try:
-                iface.hide()
-            except Exception:
-                pass
+        # Chrome + Firefox
+        if "chrome" in app_name or "firefox" in app_name:
+            show_keyboard()
         else:
-            subprocess.Popen(["pkill", "onboard"])
+            hide_keyboard()
 
 def main():
-    ChromeKeyboardManager()
+    BrowserKeyboardManager()
     Gtk.main()
 
 if __name__ == "__main__":
     main()
+

@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+SERVICE="eta-chrome-osk.service"
+
+echo "eta-chrome-osk: applying systemd user presets"
+
+# system-wide preset (user services)
+if command -v systemctl >/dev/null 2>&1; then
+    systemctl --no-reload preset-all >/dev/null 2>&1 || true
+fi
+
+# Try to enable for currently logged-in users
+for uid in $(loginctl list-users --no-legend 2>/dev/null | awk '{print $1}'); do
+    USER=$(getent passwd "$uid" | cut -d: -f1)
+    [ -z "$USER" ] && continue
+
+    echo "eta-chrome-osk: enabling for user $USER"
+
+    runuser -u "$USER" -- systemctl --user enable "$SERVICE" >/dev/null 2>&1 || true
+
+    # 🚀 Otomatik başlatmayı dene, X11 session varsa çalışır
+    runuser -u "$USER" -- systemctl --user start "$SERVICE" >/dev/null 2>&1 || true
+done
+
+exit 0
+

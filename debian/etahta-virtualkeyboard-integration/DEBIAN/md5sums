@@ -1,6 +1,0 @@
-6e9397fdd8510c7cc9ed00482f7a0551  usr/bin/eta-chrome-osk
-c1deeb7971980c553c35db6c6737874e  usr/lib/etahta/chrome-osk.py
-8d6d7db7039d5c32875df2ae2a434efb  usr/lib/systemd/user-preset/90-eta.preset
-ec5649b2a325cc76b5a30a11fd8807aa  usr/lib/systemd/user/eta-chrome-osk.service
-4a4dd3598707603b3f76a2378a4504aa  usr/share/doc/etahta-virtualkeyboard-integration/changelog.gz
-d232eeba300d518b3d2600f88ace068f  usr/share/doc/etahta-virtualkeyboard-integration/copyright
