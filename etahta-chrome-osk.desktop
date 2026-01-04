@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=ETA Chrome Virtual Keyboard
+Comment=Show ETA keyboard or fallback to Onboard
+Exec=/usr/lib/etahta/chrome-osk.py
+Icon=keyboard
+Terminal=false
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+
