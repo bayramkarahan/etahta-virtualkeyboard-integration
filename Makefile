@@ -4,14 +4,13 @@ build:
 	@echo "Nothing to build"
 
 install:
-	# binaries
-	# python backend ve wrapper
+	# python backend
 	install -d $(DESTDIR)$(PREFIX)/lib/etahta
 	install -m 755 chrome-osk.py \
 		$(DESTDIR)$(PREFIX)/lib/etahta/chrome-osk.py
 
-	# systemd user service
+	# autostart desktop
 	install -d $(DESTDIR)/etc/xdg/autostart
-	install -m 755 etahta-chrome-osk.desktop \
+	install -m 644 etahta-chrome-osk.desktop \
 		$(DESTDIR)/etc/xdg/autostart/etahta-chrome-osk.desktop
 

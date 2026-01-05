@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 import gi
 import dbus
+import gi
+import dbus
+from dbus.mainloop.glib import DBusGMainLoop
+
+DBusGMainLoop(set_as_default=True)
 
 gi.require_version("Wnck", "3.0")
 gi.require_version("Gtk", "3.0")
