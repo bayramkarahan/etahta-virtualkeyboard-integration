@@ -1,7 +1,0 @@
-#bayram KARAHAN bayramk@gmail.com
-[Desktop Entry]
-Type=Application
-Name=chromeosk
-Exec=/usr/lib/etahta/chrome-osk.py
-X-GNOME-Autostart-enabled=true
-X-GNOME-Autostart-Delay=5
